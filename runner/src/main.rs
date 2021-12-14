@@ -10,4 +10,7 @@ fn main() {
 
     let d2_p1 = day2::part1();
     println!("Solution d2p1: {}", d2_p1);
+
+    let d2_p2 = day2::part2();
+    println!("Solution d2p2: {}", d2_p2);
 }
