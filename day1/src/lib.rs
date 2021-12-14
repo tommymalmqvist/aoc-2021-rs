@@ -1,8 +1,8 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 
-pub fn day_1() -> String {
-    let file = File::open("./day1/src/input.txt").expect("could not open file");
+pub fn part1() -> String {
+    let file = File::open("./day1/src/input_1.txt").expect("could not open file");
     let reader = BufReader::new(file);
 
     let mut counter: i64 = 0;
@@ -11,7 +11,7 @@ pub fn day_1() -> String {
     for (index, line) in reader.lines().enumerate() {
         // parse line to i64
         let line = line.unwrap();
-        let line = line.parse::<i64>().expect("Could not parse i64");
+        let line = line.parse::<i64>().expect("Could not parse number");
 
         // only do stuff when it's NOT the first line
         if index != 0 {
@@ -24,4 +24,46 @@ pub fn day_1() -> String {
     }
 
     counter.to_string()
+}
+
+pub fn part2() -> String {
+    let file = File::open("./day1/src/input_2.txt").expect("could not open file");
+    let reader = BufReader::new(file);
+
+    let mut numbers = Vec::new();
+
+    for line in reader.lines() {
+        let number = line.unwrap();
+        let number = number.parse::<i64>().expect("Could not parse number");
+
+        numbers.push(number);
+    }
+
+    let mut row: usize = 0;
+
+    let mut series: Vec<i64> = Vec::new();
+
+    while row + 3 <= numbers.len() {
+        let sum = numbers[row + 0] + numbers[row + 1] + numbers[row + 2];
+
+        series.push(sum);
+
+        row += 1;
+    }
+
+    // Calculate changes
+    let mut increases: i64 = 0;
+    let mut previous: i64 = 0;
+    for (index, number) in series.iter().enumerate() {
+        if index == 0 {
+            previous = *number;
+        } else if number > &previous {
+            increases += 1;
+            previous = *number;
+        } else {
+            previous = *number;
+        }
+    }
+
+    String::from(format!("{}", increases))
 }

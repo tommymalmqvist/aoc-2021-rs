@@ -1,6 +1,9 @@
-use day1::{self, day_1};
+use day1;
 
 fn main() {
-    let s = day_1();
-    println!("{}", s);
+    let d1_p1 = day1::part1();
+    println!("Solution d1p1: {}", d1_p1);
+
+    let d1_p2 = day1::part2();
+    println!("Solution d1p2: {}", d1_p2);
 }
