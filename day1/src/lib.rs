@@ -1,16 +1,13 @@
-use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use utils::file_loader;
 
-pub fn part1() -> String {
-    let file = File::open("./day1/src/input_1.txt").expect("could not open file");
-    let reader = BufReader::new(file);
+pub fn part1(filename: String) -> String {
+    let data = file_loader(filename).expect("Could not parse file");
 
     let mut counter: i64 = 0;
     let mut last: i64 = 0;
 
-    for (index, line) in reader.lines().enumerate() {
+    for (index, line) in data.iter().enumerate() {
         // parse line to i64
-        let line = line.unwrap();
         let line = line.parse::<i64>().expect("Could not parse number");
 
         // only do stuff when it's NOT the first line
@@ -26,21 +23,18 @@ pub fn part1() -> String {
     counter.to_string()
 }
 
-pub fn part2() -> String {
-    let file = File::open("./day1/src/input_2.txt").expect("could not open file");
-    let reader = BufReader::new(file);
+pub fn part2(filename: String) -> String {
+    let data = file_loader(filename).expect("Could not parse file");
 
     let mut numbers = Vec::new();
 
-    for line in reader.lines() {
-        let number = line.unwrap();
-        let number = number.parse::<i64>().expect("Could not parse number");
-
+    // convert String to i64
+    for line in data.iter() {
+        let number = line.parse::<i64>().expect("Could not parse number");
         numbers.push(number);
     }
 
     let mut row: usize = 0;
-
     let mut series: Vec<i64> = Vec::new();
 
     while row + 3 <= numbers.len() {

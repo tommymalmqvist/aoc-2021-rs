@@ -1,15 +1,12 @@
-use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use utils::file_loader;
 
-pub fn part1() -> String {
-    let file = File::open("./day2/src/input_1.txt").expect("could not open file");
-    let reader = BufReader::new(file);
+pub fn part1(filename: String) -> String {
+    let data = file_loader(filename).expect("Could not parse file");
 
     let mut x: usize = 0;
     let mut y: usize = 0;
 
-    for line in reader.lines() {
-        let line = line.unwrap();
+    for line in data.iter() {
         let v: Vec<&str> = line.split(' ').collect();
         match v[0] {
             "forward" => x += v[1].parse::<usize>().unwrap(),
@@ -21,16 +18,14 @@ pub fn part1() -> String {
     String::from(format!("{}", x * y))
 }
 
-pub fn part2() -> String {
-    let file = File::open("./day2/src/input_2.txt").expect("could not open file");
-    let reader = BufReader::new(file);
+pub fn part2(filename: String) -> String {
+    let data = file_loader(filename).expect("Could not parse file");
 
     let mut x: usize = 0;
     let mut y: usize = 0;
     let mut aim: usize = 0;
 
-    for line in reader.lines() {
-        let line = line.unwrap();
+    for line in data.iter() {
         let v: Vec<&str> = line.split(' ').collect();
         match v[0] {
             "forward" => {

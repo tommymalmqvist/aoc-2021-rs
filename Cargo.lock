@@ -5,14 +5,23 @@ version = 3
 [[package]]
 name = "day1"
 version = "0.1.0"
+dependencies = [
+ "utils",
+]
 
 [[package]]
 name = "day2"
 version = "0.1.0"
+dependencies = [
+ "utils",
+]
 
 [[package]]
 name = "day3"
 version = "0.1.0"
+dependencies = [
+ "utils",
+]
 
 [[package]]
 name = "runner"
@@ -22,3 +31,7 @@ dependencies = [
  "day2",
  "day3",
 ]
+
+[[package]]
+name = "utils"
+version = "0.1.0"

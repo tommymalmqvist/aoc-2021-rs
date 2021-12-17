@@ -1,31 +1,7 @@
-use std::fs::File;
-use std::io::{self, BufRead};
-use std::path::Path;
+use utils::file_loader;
 
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where
-    P: AsRef<Path>,
-{
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
-
-fn file_loader(path: String) -> Result<Vec<String>, io::Error> {
-    let mut result: Vec<String> = Vec::new();
-
-    if let Ok(lines) = read_lines(path) {
-        for line in lines {
-            if let Ok(data) = line {
-                result.push(data)
-            }
-        }
-    }
-
-    Ok(result)
-}
-
-pub fn part1() -> String {
-    let data = file_loader("./day3/src/input_1.txt".to_string()).expect("Could not parse file");
+pub fn part1(filename: String) -> String {
+    let data = file_loader(filename).expect("Could not parse file");
 
     // Convert str to i64
     let mut result: Vec<i64> = vec![0; data[0].len()];
@@ -89,8 +65,8 @@ pub fn part2() -> String {
 
     */
 
-    let mut o_rating: i64 = 0;
-    let mut c02_rating: i64 = 0;
+    // let mut o_rating: i64 = 0;
+    // let mut c02_rating: i64 = 0;
 
     String::from("day3part2")
 }

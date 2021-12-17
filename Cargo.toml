@@ -2,6 +2,7 @@
 
 members = [
     "runner",
+    "utils",
     "day1",
     "day2",
     "day3",
