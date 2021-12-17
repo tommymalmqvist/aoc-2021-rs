@@ -1,27 +1,41 @@
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use std::io::{self, BufRead};
+use std::path::Path;
 
-pub fn part1() -> String {
-    let file = File::open("./day3/src/input_1.txt").expect("could not open file");
-    let reader = BufReader::new(file);
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
+}
 
-    // Store binary
-    let mut binary_str_vec: Vec<String> = Vec::new();
+fn file_loader(path: String) -> Result<Vec<String>, io::Error> {
+    let mut result: Vec<String> = Vec::new();
 
-    for line in reader.lines() {
-        let line = line.unwrap();
-        binary_str_vec.push(line);
+    if let Ok(lines) = read_lines(path) {
+        for line in lines {
+            if let Ok(data) = line {
+                result.push(data)
+            }
+        }
     }
 
-    // Convert str to i64
-    let mut binary_vec: Vec<i64> = vec![0; 12];
+    Ok(result)
+}
 
-    for binary_str in binary_str_vec {
-        for (index, i) in binary_str.chars().enumerate() {
+pub fn part1() -> String {
+    let data = file_loader("./day3/src/input_1.txt".to_string()).expect("Could not parse file");
+
+    // Convert str to i64
+    let mut result: Vec<i64> = vec![0; data[0].len()];
+
+    for binary in data {
+        for (index, i) in binary.chars().enumerate() {
             if i == '1' {
-                binary_vec[index] += 1;
+                result[index] += 1;
             } else {
-                binary_vec[index] -= 1;
+                result[index] -= 1;
             }
         }
     }
@@ -30,7 +44,7 @@ pub fn part1() -> String {
     let mut gamma: Vec<String> = Vec::new();
     let mut epsilon: Vec<String> = Vec::new();
 
-    for number in binary_vec.iter() {
+    for number in result.iter() {
         if number > &0 {
             gamma.push("1".to_string());
             epsilon.push("0".to_string());
@@ -46,9 +60,37 @@ pub fn part1() -> String {
     let gamma = isize::from_str_radix(gamma.as_str(), 2).unwrap();
     let epsilon = isize::from_str_radix(epsilon.as_str(), 2).unwrap();
 
-    String::from(format!("{:?}", epsilon * gamma))
+    let result = epsilon * gamma;
+
+    String::from(format!("{}", result))
 }
 
 pub fn part2() -> String {
+    /*
+    input: input_1.txt
+
+    - To find oxygen generator rating, determine the most common value (0 or 1) in the current bit position, and keep only numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 1 in the position being considered.
+
+    - To find CO2 scrubber rating, determine the least common value (0 or 1) in the current bit position, and keep only numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 0 in the position being considered.
+
+    Examples:
+    --------
+    Bit position 1, most common is 1 for O-rating and 0 for C02-rating
+    [1]01011111100
+    [1]11011001000
+    [0]11110010101
+    [0]10011000110
+
+    Bit position 2, most common is 0 for O-rating and 0 for C02-rating
+    1[0]1011111100
+    1[1]1011001000
+    0[1]1110010101
+    0[1]0011000110
+
+    */
+
+    let mut o_rating: i64 = 0;
+    let mut c02_rating: i64 = 0;
+
     String::from("day3part2")
 }
