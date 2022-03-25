@@ -18,6 +18,6 @@ fn main() {
     let d3_p1 = day3::part1(String::from("./day3/src/input_1.txt"));
     println!("Solution d3p1: {}", d3_p1);
 
-    let d3_p2 = day3::part2();
+    let d3_p2 = day3::part2(String::from("./day3/src/input_1.txt"));
     println!("Solution d3p2: {}", d3_p2);
 }

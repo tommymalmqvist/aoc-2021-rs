@@ -41,32 +41,59 @@ pub fn part1(filename: String) -> String {
     String::from(format!("{}", result))
 }
 
-pub fn part2() -> String {
-    /*
-    input: input_1.txt
+pub fn part2(filename: String) -> String {
+    // load data from file
+    let file = file_loader(filename).expect("Could not parse file");
 
-    - To find oxygen generator rating, determine the most common value (0 or 1) in the current bit position, and keep only numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 1 in the position being considered.
+    let oxygen = search(file.clone(), 0, "most");
+    let oxygen = String::from_iter(oxygen);
+    let oxygen =
+        isize::from_str_radix(oxygen.as_str(), 2).expect("Could not parse int from binary");
 
-    - To find CO2 scrubber rating, determine the least common value (0 or 1) in the current bit position, and keep only numbers with that bit in that position. If 0 and 1 are equally common, keep values with a 0 in the position being considered.
+    let co2 = search(file, 0, "least");
+    let co2 = String::from_iter(co2);
+    let co2 = isize::from_str_radix(co2.as_str(), 2).expect("Could not parse int from binary");
 
-    Examples:
-    --------
-    Bit position 1, most common is 1 for O-rating and 0 for C02-rating
-    [1]01011111100
-    [1]11011001000
-    [0]11110010101
-    [0]10011000110
+    String::from(format!("{}", oxygen * co2))
+}
 
-    Bit position 2, most common is 0 for O-rating and 0 for C02-rating
-    1[0]1011111100
-    1[1]1011001000
-    0[1]1110010101
-    0[1]0011000110
+fn search(data: Vec<String>, bit_position: usize, target: &str) -> Vec<String> {
+    if data.len() <= 1 {
+        return data;
+    }
 
-    */
+    let (mut ones, mut zeroes) = (0, 0);
+    for line in &data {
+        if let Some(c) = line.chars().nth(bit_position) {
+            if c == '1' {
+                ones += 1
+            } else {
+                zeroes += 1
+            }
+        }
+    }
 
-    // let mut o_rating: i64 = 0;
-    // let mut c02_rating: i64 = 0;
+    let mut v: Vec<String> = Vec::new();
 
-    String::from("day3part2")
+    for line in &data {
+        if let Some(c) = line.chars().nth(bit_position) {
+            // Looking for most common
+            if (target == "most") && (ones > zeroes) && (c == '1') {
+                v.push(line.clone())
+            } else if (target == "most") && (ones < zeroes) && (c == '0') {
+                v.push(line.clone())
+            } else if (target == "most") && (ones == zeroes) && (c == '1') {
+                v.push(line.clone())
+            }
+            // Looking for least common
+            else if (target == "least") && (ones > zeroes) && (c == '0') {
+                v.push(line.clone())
+            } else if (target == "least") && (ones < zeroes) && (c == '1') {
+                v.push(line.clone())
+            } else if (target == "least") && (ones == zeroes) && (c == '0') {
+                v.push(line.clone())
+            }
+        }
+    }
+    return search(v, bit_position + 1, &target);
 }
